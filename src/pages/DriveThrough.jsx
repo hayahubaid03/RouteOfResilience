@@ -34,13 +34,14 @@ const sections = [
 ];
 
 // Define the custom taxi stop points for each section
-const taxiStopX = [650, 100, 250, 500, 300, 100]; // px offsets for where taxi "parks"
-const driveDistance = 1000; // how far the car drives off-screen before transitioning
+const taxiStopX = [650, 650, 650, 650, 650, 650]; // px offsets for where taxi "parks"
+const driveDistance = 700; // how far the car drives off-screen before transitioning
 
 export default function DriveThrough() {
   const [step, setStep] = useState(0);
   const [taxiX, setTaxiX] = useState(taxiStopX[0]);
   const [animating, setAnimating] = useState(false);
+  const [roadMoving, setRoadMoving] = useState(false);
 
   const handleReverseDrive = () => {
     if (step <= 0 || animating) return;
@@ -58,16 +59,22 @@ export default function DriveThrough() {
 
   const handleDrive = () => {
     if (step >= sections.length - 1 || animating) return;
-
+  
+    const nextStep = step + 1;
     setAnimating(true);
-    setTaxiX(driveDistance); // drive off-screen first
-
+    setRoadMoving(true); // Start road motion
+    setStep(nextStep);   // 🔁 Trigger page scroll immediately
+  
+    setTaxiX(driveDistance); // Car starts moving
+  
     setTimeout(() => {
-      const nextStep = step + 1;
-      setStep(nextStep);
-      setTaxiX(taxiStopX[nextStep]); // taxi parks at next custom stop
+      setTaxiX(taxiStopX[nextStep]); // Taxi returns and parks
       setAnimating(false);
     }, 1200);
+  
+    setTimeout(() => {
+      setRoadMoving(false);
+    }, 1500);
   };
 
   return (
@@ -84,7 +91,7 @@ export default function DriveThrough() {
         {/* Sliding sections */}
         <motion.div
           animate={{ x: `-${step * 100}vw` }}
-          transition={{ duration: 1.2, ease: "easeInOut" }}
+          transition={{ duration: 1.7, ease: "easeInOut" }}
           style={{
             display: "flex",
             width: `${sections.length * 100}vw`,
@@ -131,6 +138,41 @@ export default function DriveThrough() {
           ))}
         </motion.div>
 
+        {/* Road */}
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            width: "100%",
+            height: "80px",
+            backgroundColor: "#333",
+            display: "flex",
+            alignItems: "center",
+            zIndex: 5,
+            overflow: "hidden",
+          }}
+        >
+          {/* Animated dashed line */}
+          <motion.div
+            animate={
+              roadMoving ? { backgroundPositionX: ["0px", "-80px"] } : {}
+            }
+            transition={
+              animating
+                ? { duration: 0.1, ease: "linear", repeat: Infinity }
+                : {}
+            }
+            style={{
+              width: "100%",
+              height: "6px",
+              backgroundImage:
+                "repeating-linear-gradient(to right, white 0px, white 40px, transparent 40px, transparent 80px)",
+              backgroundSize: "160px 100%",
+            }}
+          />
+        </Box>
+
         {/* Taxi */}
         <motion.img
           src={taxiImage}
@@ -148,28 +190,60 @@ export default function DriveThrough() {
             zIndex: 10,
           }}
         />
-        <Box
-          sx={{
-            position: "absolute",
-            bottom: 20,
-            left: 20,
-            zIndex: 10,
-          }}
-        >
-          <button
-            disabled={step === 0 || animating}
-            onClick={handleReverseDrive}
-            style={{
-              background: "transparent",
-              border: "none",
-              color: "black",
-              fontSize: "18px",
-              cursor: step === 0 || animating ? "not-allowed" : "pointer",
+        {step > 0 && (
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: 20,
+              left: 20,
+              zIndex: 10,
+              display: "flex",
+              flexDirection: "column",
+              gap: 1,
             }}
           >
-            ⬅ Back
-          </button>
-        </Box>
+            {/* Back Button */}
+            <button
+              disabled={animating}
+              onClick={handleReverseDrive}
+              style={{
+                background: "transparent",
+                border: "none",
+                color: "black",
+                fontSize: "18px",
+                cursor: animating ? "not-allowed" : "pointer",
+              }}
+            >
+              ⬅ Back
+            </button>
+
+            {/* Start Over Button on Last Section */}
+            {step === sections.length - 1 && (
+              <button
+                disabled={animating}
+                onClick={() => {
+                  setAnimating(true);
+                  setTaxiX(-driveDistance); // drive off-screen left
+
+                  setTimeout(() => {
+                    setStep(0);
+                    setTaxiX(taxiStopX[0]);
+                    setAnimating(false);
+                  }, 1200);
+                }}
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  color: "black",
+                  fontSize: "18px",
+                  cursor: animating ? "not-allowed" : "pointer",
+                }}
+              >
+                🔁 Start Over
+              </button>
+            )}
+          </Box>
+        )}
       </Box>
     </>
   );
