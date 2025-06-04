@@ -34,13 +34,27 @@ const sections = [
 ];
 
 // Define the custom taxi stop points for each section
-const taxiStopX = [0, 100, 250, 500, 300, 100]; // px offsets for where taxi "parks"
+const taxiStopX = [650, 100, 250, 500, 300, 100]; // px offsets for where taxi "parks"
 const driveDistance = 1000; // how far the car drives off-screen before transitioning
 
 export default function DriveThrough() {
   const [step, setStep] = useState(0);
   const [taxiX, setTaxiX] = useState(taxiStopX[0]);
   const [animating, setAnimating] = useState(false);
+
+  const handleReverseDrive = () => {
+    if (step <= 0 || animating) return;
+
+    setAnimating(true);
+    setTaxiX(-driveDistance); // drive off-screen to the left
+
+    setTimeout(() => {
+      const prevStep = step - 1;
+      setStep(prevStep);
+      setTaxiX(taxiStopX[prevStep]); // park at previous step
+      setAnimating(false);
+    }, 1200);
+  };
 
   const handleDrive = () => {
     if (step >= sections.length - 1 || animating) return;
@@ -65,7 +79,6 @@ export default function DriveThrough() {
           width: "100vw",
           height: "100vh",
           overflow: "hidden",
-          pt: "112px",
         }}
       >
         {/* Sliding sections */}
@@ -102,7 +115,6 @@ export default function DriveThrough() {
               >
                 {section.title}
               </Typography>
-              
 
               <Typography
                 variant="body1"
@@ -130,11 +142,34 @@ export default function DriveThrough() {
             position: "absolute",
             bottom: 40,
             left: 0,
-            width: "120px",
+            width: "400px", // increase to your liking
+            height: "auto",
             cursor: step < sections.length - 1 ? "pointer" : "default",
             zIndex: 10,
           }}
         />
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: 20,
+            left: 20,
+            zIndex: 10,
+          }}
+        >
+          <button
+            disabled={step === 0 || animating}
+            onClick={handleReverseDrive}
+            style={{
+              background: "transparent",
+              border: "none",
+              color: "black",
+              fontSize: "18px",
+              cursor: step === 0 || animating ? "not-allowed" : "pointer",
+            }}
+          >
+            ⬅ Back
+          </button>
+        </Box>
       </Box>
     </>
   );
