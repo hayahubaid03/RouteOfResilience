@@ -3,6 +3,9 @@ import { Box, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import Navbar from "../components/NavBar";
 import taxiImage from "../imgs/taxi.png";
+import pakistanFlag from "../imgs/PakistanFlag.png";
+import uaeFlag from "../imgs/UAEflag.png";
+
 
 const sections = [
   {
@@ -104,6 +107,7 @@ export default function DriveThrough() {
               sx={{
                 flex: "0 0 100vw",
                 height: "100%",
+                position: "relative", // Add this!
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
@@ -111,6 +115,43 @@ export default function DriveThrough() {
                 bgcolor: "#f0fff0",
               }}
             >
+              {/* Add flag to first section */}
+              {i === 0 && (
+                <>
+                  <motion.img
+                    src={pakistanFlag}
+                    alt="Pakistan Flag"
+                    initial={{ opacity: 1, y: 0 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0 }}
+                    style={{
+                      position: "absolute",
+                      bottom: 20,
+                      left: 0,
+                      width: "550px",
+                      height: "auto",
+                      zIndex: 6,
+                    }}
+                  />
+
+                  <motion.img
+                    src={uaeFlag}
+                    alt="UAE Flag"
+                    initial={{ opacity: 1, y: 0 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0 }}
+                    style={{
+                      position: "absolute",
+                      bottom: 20,
+                      right: 0,
+                      width: "400px",
+                      height: "auto",
+                      zIndex: 6,
+                    }}
+                  />
+                </>
+              )}
+
               <Typography
                 variant="h4"
                 sx={{
@@ -190,6 +231,7 @@ export default function DriveThrough() {
             zIndex: 10,
           }}
         />
+
         {step > 0 && (
           <Box
             sx={{
