@@ -12,7 +12,7 @@ const sections = [
     title: "Start Exploring the Routes of Resilience",
     content: (
       <>
-        <Typography variant="h5" sx={{ mb: 2 }}>
+        <Typography variant="h4" sx={{ mb: 2 }}>
           Buckle up — you're about to experience the journey of thousands of
           Pakistani men who drive the streets of Dubai every day.
         </Typography>
@@ -33,12 +33,49 @@ const sections = [
   { title: "Push Factors", content: "Poverty, unemployment..." },
   { title: "Pull Factors", content: "UAE offers accessible jobs..." },
   { title: "Hardships", content: "Long hours, separation..." },
-  { title: "Bibliography", content: "Arif, Amjad, HRW..." },
+  {
+    title: "Bibliography",
+    content: (
+      <Box sx={{ px: 3, textAlign: "left", maxWidth: "1000px", fontSize: "1.15rem" }}>
+        <Typography paragraph>
+          <strong>1.</strong> Arif, G. M., and Rashid Amjad.{" "}
+          <i>
+            Migration Impact on Remittances: Special Focus on Gulf Countries – A
+            Case Study of Pakistan.
+          </i>{" "}
+          Islamabad: Pakistan Institute of Development Economics, 2014.
+        </Typography>
+        <Typography paragraph>
+          <strong>2.</strong> Mansuri, Ghazala.{" "}
+          <i>
+            Migration, School Attainment, and Child Labor: Evidence from Rural
+            Pakistan.
+          </i>{" "}
+          World Bank Policy Research Working Paper No. 3945. Washington, DC:
+          World Bank, 2006.
+        </Typography>
+        <Typography paragraph>
+          <strong>3.</strong> Human Rights Watch. “Questions and Answers:
+          Migrant Worker Abuses in UAE and COP28.” Human Rights Watch, December
+          3, 2023.
+        </Typography>
+        <Typography paragraph>
+          <strong>4.</strong> Walk Free. “United Arab Emirates.”{" "}
+          <i>Global Slavery Index</i>, 2023.
+        </Typography>
+        <Typography paragraph>
+          <strong>5.</strong> Ubaid, Hayah.{" "}
+          <i>Interviews with Pakistani Taxi Drivers in Dubai.</i> Conducted
+          online, 2025.
+        </Typography>
+      </Box>
+    ),
+  },
 ];
 
 // Define the custom taxi stop points for each section
-const taxiStopX = [650, 650, 650, 650, 650, 650]; // px offsets for where taxi "parks"
-const driveDistance = 700; // how far the car drives off-screen before transitioning
+const taxiStopX = [540, 540, 540, 540, 540, 540]; // px offsets for where taxi "parks"
+const driveDistance = 600; // how far the car drives off-screen before transitioning
 
 export default function DriveThrough() {
   const [step, setStep] = useState(0);
@@ -127,7 +164,7 @@ export default function DriveThrough() {
                     style={{
                       position: "absolute",
                       bottom: 20,
-                      left: 0,
+                      left: -100,
                       width: "550px",
                       height: "auto",
                       zIndex: 6,
@@ -143,7 +180,7 @@ export default function DriveThrough() {
                     style={{
                       position: "absolute",
                       bottom: 20,
-                      right: 0,
+                      right: -50,
                       width: "400px",
                       height: "auto",
                       zIndex: 6,
@@ -233,46 +270,19 @@ export default function DriveThrough() {
         />
 
         {step > 0 && (
-          <Box
-            sx={{
-              position: "absolute",
-              bottom: 20,
-              left: 20,
-              zIndex: 10,
-              display: "flex",
-              flexDirection: "column",
-              gap: 1,
-            }}
-          >
-            {/* Back Button */}
-            <button
-              disabled={animating}
-              onClick={handleReverseDrive}
-              style={{
-                background: "transparent",
-                border: "none",
-                color: "black",
-                fontSize: "18px",
-                cursor: animating ? "not-allowed" : "pointer",
+          <>
+            {/* Back Button on the left */}
+            <Box
+              sx={{
+                position: "absolute",
+                bottom: 80,
+                left: 0,
+                zIndex: 10,
               }}
             >
-              ⬅ Back
-            </button>
-
-            {/* Start Over Button on Last Section */}
-            {step === sections.length - 1 && (
               <button
                 disabled={animating}
-                onClick={() => {
-                  setAnimating(true);
-                  setTaxiX(-driveDistance); // drive off-screen left
-
-                  setTimeout(() => {
-                    setStep(0);
-                    setTaxiX(taxiStopX[0]);
-                    setAnimating(false);
-                  }, 1200);
-                }}
+                onClick={handleReverseDrive}
                 style={{
                   background: "transparent",
                   border: "none",
@@ -281,10 +291,45 @@ export default function DriveThrough() {
                   cursor: animating ? "not-allowed" : "pointer",
                 }}
               >
-                🔁 Start Over
+                ⬅ Back
               </button>
+            </Box>
+
+            {/* Start Over Button on the right if on last step */}
+            {step === sections.length - 1 && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  bottom: 80,
+                  right: 0,
+                  zIndex: 10,
+                }}
+              >
+                <button
+                  disabled={animating}
+                  onClick={() => {
+                    setAnimating(true);
+                    setTaxiX(-driveDistance);
+
+                    setTimeout(() => {
+                      setStep(0);
+                      setTaxiX(taxiStopX[0]);
+                      setAnimating(false);
+                    }, 1200);
+                  }}
+                  style={{
+                    background: "transparent",
+                    border: "none",
+                    color: "black",
+                    fontSize: "18px",
+                    cursor: animating ? "not-allowed" : "pointer",
+                  }}
+                >
+                  🔁 Start Over
+                </button>
+              </Box>
             )}
-          </Box>
+          </>
         )}
       </Box>
     </>
