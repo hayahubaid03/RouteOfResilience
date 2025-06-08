@@ -5,6 +5,7 @@ import Navbar from "../components/NavBar";
 import taxiImage from "../imgs/taxi.png";
 import pakistanFlag from "../imgs/PakistanFlag.png";
 import uaeFlag from "../imgs/UAEflag.png";
+import { Container } from "@mui/material"; 
 
 
 const sections = [
@@ -143,7 +144,7 @@ export default function DriveThrough() {
               key={i}
               sx={{
                 flex: "0 0 100vw",
-                height: "100%",
+                minHeight: "100vh",
                 position: "relative", // Add this!
                 display: "flex",
                 flexDirection: "column",
@@ -164,8 +165,8 @@ export default function DriveThrough() {
                     style={{
                       position: "absolute",
                       bottom: 20,
-                      left: -100,
-                      width: "550px",
+                      left: 0,
+                      width: "clamp(180px, 30vw, 400px)",
                       height: "auto",
                       zIndex: 6,
                     }}
@@ -180,8 +181,8 @@ export default function DriveThrough() {
                     style={{
                       position: "absolute",
                       bottom: 20,
-                      right: -50,
-                      width: "400px",
+                      right: 0,
+                      width: "clamp(180px, 20vw, 300px)",
                       height: "auto",
                       zIndex: 6,
                     }}
@@ -189,29 +190,30 @@ export default function DriveThrough() {
                 </>
               )}
 
-              <Typography
-                variant="h4"
-                sx={{
-                  fontFamily: "'Times New Roman', serif",
-                  color: "#006600",
-                  mb: 2,
-                  textAlign: "center",
-                }}
-              >
-                {section.title}
-              </Typography>
+              <Container maxWidth="md" sx={{ textAlign: "center", px: 2 }}>
+                <Typography
+                  variant="h4"
+                  sx={{
+                    fontFamily: "'Times New Roman', serif",
+                    color: "#006600",
+                    mb: 2,
+                    fontSize: { xs: "1.8rem", md: "2.5rem" },
+                  }}
+                >
+                  {section.title}
+                </Typography>
 
-              <Typography
-                variant="body1"
-                sx={{
-                  fontFamily: "'Times New Roman', serif",
-                  color: "#006600",
-                  maxWidth: "700px",
-                  textAlign: "center",
-                }}
-              >
-                {section.content}
-              </Typography>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontFamily: "'Times New Roman', serif",
+                    color: "#006600",
+                    fontSize: { xs: "1rem", md: "1.2rem" },
+                  }}
+                >
+                  {section.content}
+                </Typography>
+              </Container>
             </Box>
           ))}
         </motion.div>
