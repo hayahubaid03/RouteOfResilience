@@ -13,6 +13,10 @@ import Shaik from "../imgs/Shaik.jpg";
 import OverviewCards from "../components/OverviewCards.jsx";
 import TeamSection from "../components/TeamSection.jsx";
 import InterviewCards from "../components/InterviewCards.jsx";
+import PushFactorCards from "../components/PushFactorCards.jsx";
+import PullFactorCards from "../components/PullFactorCards.jsx";
+import HardshipCarousel from "../components/HardshipCarousel.jsx";
+
 
 
 const sections = [
@@ -63,7 +67,7 @@ const sections = [
             fontSize: "1.1rem",
             mb: 3,
             color: "#006600",
-            maxWidth: "800px",
+            maxWidth: "1200px",
             mx: "auto",
           }}
         >
@@ -74,9 +78,70 @@ const sections = [
       </>
     ),
   },
-  { title: "Push Factors", content: "Poverty, unemployment..." },
-  { title: "Pull Factors", content: "UAE offers accessible jobs..." },
-  { title: "Hardships", content: "Long hours, separation..." },
+  {
+    title: "Push Factors",
+    content: (
+      <>
+        <Typography
+          variant="body1"
+          sx={{
+            fontSize: "1.1rem",
+            mb: 3,
+            color: "#006600",
+            maxWidth: "800px",
+            mx: "auto",
+          }}
+        >
+          Click on each factor to understand what drives migration from Pakistan
+          — and hear firsthand how our interviewees experienced these
+          challenges.
+        </Typography>
+        <PushFactorCards />
+      </>
+    ),
+  },
+  {
+    title: "Pull Factors",
+    content: (
+      <>
+        <Typography
+          variant="body1"
+          sx={{
+            fontSize: "1.1rem",
+            mb: 3,
+            color: "#006600",
+            maxWidth: "800px",
+            mx: "auto",
+          }}
+        >
+          Click on each factor to explore what draws migrants to the Gulf — and
+          hear firsthand how the promise of opportunity shapes their journey.
+        </Typography>
+        <PullFactorCards />
+      </>
+    ),
+  },
+  {
+    title: "Hardships & Issues",
+    content: (
+      <>
+        <Typography
+          variant="body1"
+          sx={{
+            fontSize: "1.1rem",
+            mb: 3,
+            color: "#006600",
+            maxWidth: "800px",
+            mx: "auto",
+          }}
+        >
+          Click on each factor to uncover the daily struggles migrants face —
+          and learn how these challenges affect their hopes, health, and livelihoods.
+        </Typography>
+        <HardshipCarousel />
+      </>
+    ),
+  },
   {
     title: "Bibliography",
     content: (
