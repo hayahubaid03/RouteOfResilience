@@ -10,308 +10,9 @@ import { useRef, useLayoutEffect } from "react";
 import Hayah from "../imgs/Hayah2.jpeg";
 import Brendan from "../imgs/Brendan.jpeg";
 import Shaik from "../imgs/Shaik.jpg";
-
-const CardItem = ({ title, body }) => (
-  <Box
-    sx={{
-      width: { xs: "100%", sm: "45%", md: "22%" },
-      bgcolor: "#e8f5e9",
-      borderRadius: 2,
-      boxShadow: 4,
-      p: 2,
-      textAlign: "left",
-    }}
-  >
-    <Typography variant="h6" sx={{ color: "#2e7d32", mb: 1 }}>
-      {title}
-    </Typography>
-    <Typography variant="body2" component="div">
-      {body}
-    </Typography>
-  </Box>
-);
-
-const OverviewSection = () => {
-  const containerRef = useRef(null);
-  const topCardsContainerRef = useRef(null);
-  const teamCardRef = useRef(null);
-  const topCardRefs = [useRef(null), useRef(null), useRef(null)];
-  const [cardCenters, setCardCenters] = useState([]);
-
-  useLayoutEffect(() => {
-    const updatePositions = () => {
-      const containerRect = containerRef.current?.getBoundingClientRect();
-      const centers = topCardRefs.map((ref) =>
-        ref.current
-          ? ref.current.getBoundingClientRect().left +
-            ref.current.getBoundingClientRect().width / 2 -
-            (containerRect?.left ?? 0)
-          : 0
-      );
-      setCardCenters(centers);
-
-      // Position the team card to align with first and last top cards
-      if (
-        topCardRefs[0].current &&
-        topCardRefs[2].current &&
-        teamCardRef.current &&
-        containerRef.current
-      ) {
-        const firstCard = topCardRefs[0].current;
-        const lastCard = topCardRefs[2].current;
-        const teamCard = teamCardRef.current;
-        const mainContainer = containerRef.current;
-
-        const firstCardRect = firstCard.getBoundingClientRect();
-        const lastCardRect = lastCard.getBoundingClientRect();
-        const mainContainerRect = mainContainer.getBoundingClientRect();
-
-        // Calculate position to span from first card's left edge to last card's right edge
-        // Adjust leftOffset to move the team card further left
-        const leftOffset = firstCardRect.left - mainContainerRect.left - 32; // Move 32px left
-        const rightEdge = lastCardRect.right - mainContainerRect.left - 32;
-        const width = rightEdge - leftOffset;
-
-        // Apply the positioning
-        teamCard.style.marginLeft = `${leftOffset}px`;
-        teamCard.style.width = `${width}px`;
-        teamCard.style.marginRight = "0";
-        teamCard.style.boxSizing = "border-box";
-      }
-    };
-
-    // Use a timeout to ensure layout is complete
-    const timeoutId = setTimeout(updatePositions, 0);
-
-    updatePositions();
-    window.addEventListener("resize", updatePositions);
-    return () => {
-      window.removeEventListener("resize", updatePositions);
-      clearTimeout(timeoutId);
-    };
-  }, []);
-
-  return (
-    <Box
-      ref={containerRef}
-      sx={{
-        width: "100%",
-        px: { xs: 2, sm: 4 },
-        pt: 4,
-        pb: 20,
-        bgcolor: "#f0fff0",
-        position: "relative",
-      }}
-    >
-      {/* Title */}
-      <Box sx={{ textAlign: "center", mb: 8 }}>
-        <Typography
-          variant="h4"
-          sx={{
-            fontWeight: "bold",
-            fontFamily: "'Times New Roman', serif",
-            color: "#006600",
-          }}
-        >
-          Overview
-        </Typography>
-      </Box>
-
-      {/* Connector Lines */}
-      {cardCenters.length === 3 && (
-        <Box
-          sx={{
-            position: "absolute",
-            top: 75,
-            left: 0,
-            width: "100%",
-            height: 100,
-            display: { xs: "none", md: "block" },
-            pointerEvents: "none",
-          }}
-        >
-          <Box
-            sx={{
-              position: "absolute",
-              top: 0,
-              left: "50%",
-              width: "2px",
-              height: "40px",
-              backgroundColor: "#006600",
-              transform: "translateX(-50%)",
-            }}
-          />
-          <Box
-            sx={{
-              position: "absolute",
-              top: 30, // was 40
-              left: cardCenters[0],
-              width: cardCenters[2] - cardCenters[0],
-              height: "2px",
-              backgroundColor: "#006600",
-            }}
-          />
-          {cardCenters.map((center, i) => (
-            <Box
-              key={i}
-              sx={{
-                position: "absolute",
-                top: 30, //was 40
-                left: center,
-                width: "2px",
-                height: "30px",
-                backgroundColor: "#006600",
-                transform: "translateX(-50%)",
-              }}
-            />
-          ))}
-        </Box>
-      )}
-
-      {/* Top 3 Cards */}
-      <Box
-        ref={topCardsContainerRef}
-        sx={{
-          display: "flex",
-          flexDirection: { xs: "column", md: "row" },
-          justifyContent: "space-around",
-          alignItems: "stretch",
-          gap: 10,
-          mb: 2,
-        }}
-      >
-        {[
-          {
-            title: "Why This Project?",
-            body: "In the glittering city of Dubai, it's easy to overlook the migrant workers behind the wheel. We chose to spotlight Pakistani taxi drivers to understand their motivations, sacrifices, and challenges. This reflects global labor inequality.",
-          },
-          {
-            title: "What You'll Explore",
-            body: (
-              <>
-                <ul>
-                  <li>What pushed them out of Pakistan</li>
-                  <li>What pulled them into the UAE</li>
-                  <li>The hardships they face daily</li>
-                </ul>
-                <br />
-                Click the taxi to move through each chapter.
-              </>
-            ),
-          },
-          {
-            title: "Our Hypothesis",
-            body: "We believe that economic desperation, paired with an idealized image of the Gulf, pushes migrants to accept exploitative conditions in the UAE — a cycle sustained by debt, dependency, and hope.",
-          },
-        ].map((card, i) => (
-          <Box
-            key={i}
-            ref={topCardRefs[i]}
-            sx={{
-              flex: 1.15,
-              minWidth: "280px",
-              maxWidth: "400px",
-              bgcolor: "#e8f5e9",
-              borderRadius: 2,
-              boxShadow: 4,
-              p: 4,
-              textAlign: "left",
-            }}
-          >
-            <Typography
-              variant="h6"
-              sx={{ color: "#2e7d32", mb: 1, fontWeight: "bold" }}
-            >
-              {card.title}
-            </Typography>
-            <Typography variant="body2" component="div">
-              {card.body}
-            </Typography>
-          </Box>
-        ))}
-      </Box>
-
-      {/* Our Team - positioned to align exactly with first and last cards */}
-      <Box
-        ref={teamCardRef}
-        sx={{
-          bgcolor: "#e8f5e9",
-          borderRadius: 2,
-          boxShadow: 4,
-          p: 3,
-          textAlign: "center",
-          // Remove any default margins
-          margin: 0,
-        }}
-      >
-        <Typography
-          variant="h6"
-          sx={{ color: "#2e7d32", mb: 0.25, fontWeight: "bold" }}
-        >
-          Meet the Team
-        </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-            gap: 4,
-          }}
-        >
-          {[Hayah, Brendan, Shaik].map((img, i) => {
-            const names = ["Hayah Ubaid", "Brendan Wang", "Shaik Obaidullah"];
-            const emails = [
-              "hayahubaid2021@u.northwestern.edu",
-              "brendanwang2027@u.northwestern.edu",
-              "shaikobaidullah2028@u.northwestern.edu",
-            ];
-            const years = [
-              "Northwestern University '26",
-              "Northwestern University '27",
-              "Northwestern University '28",
-            ];
-            return (
-              <Box
-                key={i}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  flex: "1 1 30%",
-                  minWidth: "260px",
-                  gap: 2,
-                }}
-              >
-                <img
-                  src={img}
-                  alt={names[i]}
-                  style={{
-                    width: "100px",
-                    height: "100px",
-                    borderRadius: "50%",
-                    objectFit: "cover",
-                    objectPosition: "center 30%",
-                  }}
-                />
-                <Box sx={{ textAlign: "left" }}>
-                  <Typography sx={{ fontWeight: "bold", color: "#006600" }}>
-                    {names[i]}
-                  </Typography>
-                  <Typography sx={{ fontSize: "0.85rem", color: "#006600" }}>
-                    {emails[i]}
-                  </Typography>
-                  <Typography sx={{ fontSize: "0.85rem", color: "#006600" }}>
-                    {years[i]}
-                  </Typography>
-                </Box>
-              </Box>
-            );
-          })}
-        </Box>
-      </Box>
-    </Box>
-  );
-};
-
+import OverviewCards from "../components/OverviewCards.jsx";
+import TeamSection from "../components/TeamSection.jsx";
+import InterviewCards from "../components/InterviewCards.jsx";
 
 
 const sections = [
@@ -337,8 +38,41 @@ const sections = [
     ),
   },
   {
-    //title: "Overview",
-    content: <OverviewSection />
+    title: "Overview",
+    content: (
+      <>
+        <OverviewCards />
+        <Typography
+          variant="h6"
+          align="center"
+          sx={{ mt: 3, mb: 1, color: "green" }}
+        >
+          Meet the Team
+        </Typography>
+        <TeamSection />
+      </>
+    ),
+  },
+  {
+    title: "Interviews",
+    content: (
+      <>
+        <Typography
+          variant="body1"
+          sx={{
+            fontSize: "1.1rem",
+            mb: 3,
+            color: "#006600",
+            maxWidth: "800px",
+            mx: "auto",
+          }}
+        >
+          These are real voices of Pakistani taxi drivers in Dubai. Their words
+          reflect the sacrifices and hopes that fuel their journey.
+        </Typography>
+        <InterviewCards />
+      </>
+    ),
   },
   { title: "Push Factors", content: "Poverty, unemployment..." },
   { title: "Pull Factors", content: "UAE offers accessible jobs..." },
