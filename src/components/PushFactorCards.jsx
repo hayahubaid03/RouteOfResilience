@@ -1,5 +1,12 @@
 import React, { useState } from "react";
 import Push1 from "../imgs/Push1.png";
+import Push1_1 from "../imgs/Push1.1.jpeg";
+import Push1_2 from "../imgs/Push 1.2.jpeg";
+import Push1_3 from "../imgs/Push 1.3.jpeg";
+import Push2_1 from "../imgs/Push 2.1.jpeg";
+import Push2_2 from "../imgs/Push 2.2.jpeg";
+import Push3_2 from "../imgs/Push 3.2.jpeg";
+import Push3_3 from "../imgs/Push 3.3.jpeg";
 import Push2 from "../imgs/Push2.jpeg";
 import Push3 from "../imgs/Push3.jpeg";
 import Pull1 from "../imgs/Pull1.jpeg";
@@ -18,74 +25,81 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 const pushFactors = [
   {
     title: "Poverty and Lack of Decent Work Opportunities",
-    image: Push1,
+    image: Push1_3,
     gallery: [
       {
-        src: Push1,
-        caption: "Construction laborers resting on site, Dubai (2023)",
+        src: Push1_3,
+        caption: "Street vendors sell goods in Pakistan’s informal economy.",
       },
       {
-        src: Pull1,
-        caption: "Underdeveloped village in Sindh, Pakistan",
+        src: Push1_1,
+        caption: "Children in Pakistan picking through garbage to survive.",
       },
       {
-        src: Pull1,
-        caption: "Street vendors earning <$5/day in Karachi",
+        src: Push1_2,
+        caption:
+          "Men in Pakistan working in a small, low-wage garment factory.",
       },
     ],
     description:
-      "Limited economic opportunity, low wages, and lack of social mobility in Pakistan drive many to seek work abroad.",
+      " In rural Pakistan, widespread poverty and limited access to stable employment are key drivers of labor migration. Many families survive on informal or subsistence labor, which offers little room for financial advancement. As one study notes, more than one in four rural households includes at least one male migrant who has left in search of better work opportunities (Mansuri 2006). This migration is not random. It reflects a systematic failure to provide viable livelihoods in local communities. Another report echoes this by stating that poverty, unemployment, and lack of decent work are the primary reasons Pakistani men head abroad (Arif and Amjad 2014). For many, especially those with minimal education or training, migration becomes the only realistic option to support their families.",
     quotes: [
-      "“I couldn’t afford basic necessities. Driving in Dubai was the only option to support my kids.” — Ahmed R.",
+      "“I couldn’t afford basic necessities. Driving in Dubai was the only option to support my kids.” — Ali",
       "“I earned barely enough to survive back home.” — Bilal K.",
     ],
   },
   {
-    title: "Unemployment",
+    title: "Low Educational Attainment and Barriers to Schooling",
     image: Push2,
     gallery: [
       {
-        src: Push1,
-        caption: "Construction laborers resting on site, Dubai (2023)",
+        src: Push2,
+        caption: "Overcrowded classroom in Pakistan with minimal resources.",
       },
       {
-        src: Pull1,
-        caption: "Underdeveloped village in Sindh, Pakistan",
+        src: Push2_1,
+        caption: "Overcrowded classroom in Pakistan with minimal resources.",
       },
       {
-        src: Pull1,
-        caption: "Street vendors earning <$5/day in Karachi",
+        src: Push2_2,
+        caption:
+          "Girls in Pakistan attending class outside with no desks or shelter from the heat.",
       },
     ],
     description:
-      "Many educated or skilled workers are unable to find stable jobs in Pakistan, pushing them to migrate.",
+      "Another major push factor is the limited access to quality education, particularly in rural regions. Many school-age children in Pakistan contribute to household income through labor, as formal education is either inaccessible or unaffordable. Mansuri (2006) explains how migration indirectly improves schooling outcomes for children left behind, particularly girls, by alleviating financial burdens through remittances. However, the initial lack of education among adults, who then become migrant workers, reveals a deeper problem. Without formal education or marketable skills, men have few job prospects at home, making roles like taxi driving abroad more attractive despite the physical demands and personal sacrifices involved.",
     quotes: [
-      "“I was a school teacher for years, but there was no money in it.” — Bilal K.",
-      "“My degree couldn’t get me anything back home.” — Faisal M.",
+      "“II left school after 5th or 6th class because my father needed help in the shop. No one in my family ever went to college.” — Bilal K.",
+      "“School was never really possible. I started working young and later got a license to drive buses. But even with experience, no education meant no chance at a better job back home.” — Ali",
+      "“I finished matric and became a Hafiz. There weren’t many options beyond that for me.” — Waleed",
     ],
   },
   {
-    title: "Debt & Loans",
+    title: "National Crises and Economic Instability",
     image: Push3,
     gallery: [
       {
-        src: Push1,
-        caption: "Construction laborers resting on site, Dubai (2023)",
+        src: Push3,
+        caption:
+          "Aerial view of flood-hit homes in Pakistan, showing mass displacement.",
       },
       {
-        src: Pull1,
-        caption: "Underdeveloped village in Sindh, Pakistan",
+        src: Push3_2,
+        caption:
+          "A family wades through floodwaters after severe monsoon damage.",
       },
       {
-        src: Pull1,
-        caption: "Street vendors earning <$5/day in Karachi",
+        src: Push3_3,
+        caption:
+          "Protesters rally against inflation and IMF policies in Pakistan.",
       },
     ],
     description:
-      "To migrate, many take loans from agents or family, creating a debt trap that forces them to work abroad under tough conditions.",
+      "Economic shocks and environmental disasters also push men to migrate. For example, after the devastating 2010 floods, many Pakistani families lost their homes, crops, and sources of income. Arif and Amjad (2014) highlight how remittances served as a critical lifeline during this time, helping families rebuild. This reinforces the idea that in times of crisis, migration becomes a survival strategy. Combined with ongoing inflation, weak governance, and limited state support, these factors continue to make foreign labor markets, particularly in the Gulf, appear more stable and desirable in comparison.",
     quotes: [
-      "“I borrowed money just to get the visa and flight.” — Faisal M.",
-      "“Most of my pay goes to paying back the agent.” — Ahmed R.",
+      "“When the economy took a downturn, everything fell apart. Our trading business just couldn’t survive the restrictions and instability.” — Waleed",
+      "“The floods in 2010 destroyed our entire workshop. All our tools, everything we had was gone overnight. We had no support, no compensation.” — Bilal",
+      "“Prices kept rising in Pakistan, but my pay never did.” — Ali",
     ],
   },
 ];
@@ -107,7 +121,7 @@ export default function PushFactorCards() {
       sx={{
         display: "flex",
         justifyContent: "center",
-        gap: 4,
+        gap: 12,
         flexWrap: { xs: "wrap", md: "nowrap" },
         mt: 1,
         mb: 12,
@@ -126,8 +140,8 @@ export default function PushFactorCards() {
             <Box
               onClick={() => handleOpen(i)}
               sx={{
-                width: 360,
-                height: 360,
+                width: 340,
+                height: 340,
                 borderRadius: "50%",
                 backgroundImage: `url(${factor.image})`,
                 backgroundSize: "cover",
@@ -144,7 +158,7 @@ export default function PushFactorCards() {
             {/* Title Below Circle */}
             <Typography
               variant="subtitle1"
-              sx={{ mt: 1, fontWeight: "bold", color: "#004d00" }}
+              sx={{ mt: 0.5, mb: 4, fontWeight: "bold", color: "#004d00" }}
             >
               {factor.title}
             </Typography>
@@ -169,7 +183,7 @@ export default function PushFactorCards() {
                   borderRadius: 3,
                   boxShadow: 6,
                   p: 4,
-                  maxWidth: 500,
+                  maxWidth: 700,
                   width: "90%",
                 }}
               >

@@ -16,7 +16,169 @@ import InterviewCards from "../components/InterviewCards.jsx";
 import PushFactorCards from "../components/PushFactorCards.jsx";
 import PullFactorCards from "../components/PullFactorCards.jsx";
 import HardshipCarousel from "../components/HardshipCarousel.jsx";
+import { Card, CardContent, Button } from "@mui/material";
+import { useEffect} from "react";
 
+
+const RemittanceQuizPopup = () => {
+  const [flipped, setFlipped] = useState(false);
+  const [selected, setSelected] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+
+  // 🔁 Delay showing the popup by 4 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const correctAnswer = "c";
+
+  const handleAnswer = (option) => {
+    setSelected(option);
+
+    setTimeout(() => {
+      setFlipped(true);
+      setTimeout(() => setShowPopup(false), 5000); // hide 3s after flip
+    }, 1000); // wait 1s to show highlights
+  };
+
+  if (!showPopup) return null;
+
+  const getButtonStyles = (option) => {
+    if (!selected) return {};
+
+    if (option === correctAnswer) {
+      return {
+        borderColor: "green",
+        color: "green",
+      };
+    }
+
+    if (option === selected) {
+      return {
+        borderColor: "red",
+        color: "red",
+      };
+    }
+
+    return {};
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 60 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 1.2, ease: "easeOut" }}
+      style={{
+        position: "absolute",
+        top: 100,
+        right: 30,
+        zIndex: 20,
+        perspective: 1000,
+        width: "150px",
+        height: "auto",
+      }}
+    >
+      <motion.div
+        animate={{ rotateY: flipped ? 180 : 0 }}
+        transition={{ duration: 0.8 }}
+        style={{
+          width: "100%",
+          transformStyle: "preserve-3d",
+          position: "relative",
+        }}
+      >
+        {/* FRONT */}
+        <Box
+          sx={{
+            position: "absolute",
+            width: "100%",
+            backfaceVisibility: "hidden",
+            bgcolor: "#fff",
+            border: "2px solid #006600",
+            borderRadius: 2,
+            boxShadow: 3,
+            p: 2,
+          }}
+        >
+          <Typography
+            variant="subtitle1"
+            sx={{ fontWeight: "bold", color: "#006600", mb: 1 }}
+          >
+            Do you know?
+          </Typography>
+          <Typography sx={{ fontSize: "0.95rem", mb: 2 }}>
+            How much did Pakistan receive in remittances in 2012–2013?
+          </Typography>
+          <Button
+            fullWidth
+            variant="outlined"
+            sx={{ mb: 1, ...getButtonStyles("a") }}
+            onClick={() => handleAnswer("a")}
+            disabled={!!selected}
+          >
+            A. $5 billion
+          </Button>
+          <Button
+            fullWidth
+            variant="outlined"
+            sx={{ mb: 1, ...getButtonStyles("b") }}
+            onClick={() => handleAnswer("b")}
+            disabled={!!selected}
+          >
+            B. $9 billion
+          </Button>
+          <Button
+            fullWidth
+            variant="outlined"
+            sx={{ mb: 1, ...getButtonStyles("c") }}
+            onClick={() => handleAnswer("c")}
+            disabled={!!selected}
+          >
+            C. $13 billion
+          </Button>
+        </Box>
+
+        {/* BACK */}
+        <Box
+          sx={{
+            position: "absolute",
+            width: "100%",
+            transform: "rotateY(180deg)",
+            backfaceVisibility: "hidden",
+            bgcolor: "#fff",
+            border: "2px solid #006600",
+            borderRadius: 2,
+            boxShadow: 3,
+            p: 2,
+          }}
+        >
+          <Typography
+            variant="subtitle1"
+            sx={{
+              fontWeight: "bold",
+              color: "#006600",
+              mb: 1,
+              fontSize: "1rem",
+            }}
+          >
+            Correct Answer:
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{ fontStyle: "italic", color: "#004d00" }}
+          >
+            Pakistan received over $13 billion in remittances in 2012 and 2013,
+            making up more than 5% of its GDP.
+          </Typography>
+        </Box>
+      </motion.div>
+    </motion.div>
+  );
+};
 
 
 const sections = [
@@ -45,6 +207,7 @@ const sections = [
     title: "Overview",
     content: (
       <>
+        <RemittanceQuizPopup />
         <OverviewCards />
         <Typography
           variant="h6"
@@ -135,8 +298,9 @@ const sections = [
             mx: "auto",
           }}
         >
-          Click on each factor to uncover the daily struggles migrants face —
-          and learn how these challenges affect their hopes, health, and livelihoods.
+          Below is a timeline of a Pakistani taxi driver’s journey to Dubai.
+          Click on each stop to explore the challenges and hardships faced at
+          each stage — from the decision to migrate to daily life in the UAE.
         </Typography>
         <HardshipCarousel />
       </>
@@ -148,9 +312,13 @@ const sections = [
       <Box
         sx={{
           px: 3,
+          pt: -5,
           textAlign: "left",
           maxWidth: "1000px",
           fontSize: "1.15rem",
+          height: "80vh", // limit height
+          overflowY: "auto", // allow scrolling
+          pr: 2, // padding-right to avoid clipping scroll
         }}
       >
         <Typography paragraph>
@@ -184,6 +352,240 @@ const sections = [
           <i>Interviews with Pakistani Taxi Drivers in Dubai.</i> Conducted
           online, 2025.
         </Typography>
+        <Typography paragraph>
+          <strong>6.</strong> Aaj News. (2024, March 18).{" "}
+          <i>Karachi street vendors help economy with no legal status</i>.
+          <br />
+          <a
+            href="https://english.aaj.tv/news/30338001/karachi-street-vendors-help-economy-with-no-legal-status"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#006600", textDecoration: "underline" }}
+          >
+            https://english.aaj.tv/news/30338001/karachi-street-vendors-help-economy-with-no-legal-status
+          </a>
+        </Typography>
+
+        <Typography paragraph>
+          <strong>7.</strong> Al Jazeera. (2014, January 29).{" "}
+          <i>In pictures: Pakistan’s education woes</i>.
+          <br />
+          <a
+            href="https://www.aljazeera.com/gallery/2014/1/29/in-pictures-pakistans-education-woes"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#006600", textDecoration: "underline" }}
+          >
+            https://www.aljazeera.com/gallery/2014/1/29/in-pictures-pakistans-education-woes
+          </a>
+        </Typography>
+
+        <Typography paragraph>
+          <strong>8.</strong> Boone, J. (2010, December 27). Pakistan floods:
+          Millions still homeless. <i>The Guardian</i>.
+          <br />
+          <a
+            href="https://www.theguardian.com/lifeandstyle/2010/dec/27/pakistan-floods-millions-still-homeless"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#006600", textDecoration: "underline" }}
+          >
+            https://www.theguardian.com/lifeandstyle/2010/dec/27/pakistan-floods-millions-still-homeless
+          </a>
+        </Typography>
+
+        <Typography paragraph>
+          <strong>9.</strong> Siddiqui, Z. (2023, November 3). Migrants in UAE
+          turn to crypto to send remittances home. <i>Context</i>.
+          <br />
+          <a
+            href="https://www.context.news/digital-divides/migrants-in-uae-turn-to-crypto-to-send-remittances-home"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#006600", textDecoration: "underline" }}
+          >
+            https://www.context.news/digital-divides/migrants-in-uae-turn-to-crypto-to-send-remittances-home
+          </a>
+        </Typography>
+
+        <Typography paragraph>
+          <strong>10.</strong> Dawn. (2023, January 16).{" "}
+          <i>Protest in Karachi against soaring inflation</i>.
+          <br />
+          <a
+            href="https://www.dawn.com/news/1731487"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#006600", textDecoration: "underline" }}
+          >
+            https://www.dawn.com/news/1731487
+          </a>
+        </Typography>
+
+        <Typography paragraph>
+          <strong>11.</strong> DW News. (2023, January 9).{" "}
+          <i>Pakistani taxi drivers in Dubai: Struggling to make a living</i>{" "}
+          [Video]. YouTube.
+          <br />
+          <a
+            href="https://www.youtube.com/watch?v=XHEgENVHllk"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#006600", textDecoration: "underline" }}
+          >
+            https://www.youtube.com/watch?v=XHEgENVHllk
+          </a>
+        </Typography>
+
+        <Typography paragraph>
+          <strong>12.</strong> Encyclopaedia Britannica. (2023, August 2).{" "}
+          <i>Pakistan floods of 2010</i>.
+          <br />
+          <a
+            href="https://www.britannica.com/event/Pakistan-Floods-of-2010"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#006600", textDecoration: "underline" }}
+          >
+            https://www.britannica.com/event/Pakistan-Floods-of-2010
+          </a>
+        </Typography>
+
+        <Typography paragraph>
+          <strong>13.</strong> The Express Tribune. (2014, April 18).{" "}
+          <i>Open air education – literally</i>.
+          <br />
+          <a
+            href="https://tribune.com.pk/story/698518/open-air-education-literally"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#006600", textDecoration: "underline" }}
+          >
+            https://tribune.com.pk/story/698518/open-air-education-literally
+          </a>
+        </Typography>
+
+        <Typography paragraph>
+          <strong>14.</strong> Gulf News. (2024, May 6).{" "}
+          <i>
+            UAE job alert: Pakistan Consulate Dubai hosts career fair, offers
+            jobs for Pakistani expats
+          </i>
+          .
+          <br />
+          <a
+            href="https://gulfnews.com/uae/uae-job-alert-pakistan-consulate-dubai-hosts-career-fair-offers-jobs-for-pakistani-expats-1.500153042"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#006600", textDecoration: "underline" }}
+          >
+            https://gulfnews.com/uae/uae-job-alert-pakistan-consulate-dubai-hosts-career-fair-offers-jobs-for-pakistani-expats-1.500153042
+          </a>
+        </Typography>
+        <Typography paragraph>
+          <strong>15.</strong> Gannon, K. (2021, March 17). Pakistan’s poor push
+          to Gulf for work amid pandemic. <i>AP News</i>.
+          <br />
+          <a
+            href="https://apnews.com/article/lifestyle-business-health-pakistan-coronavirus-pandemic-ca85c6959b8559183612e61ccd6bea53"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#006600", textDecoration: "underline" }}
+          >
+            https://apnews.com/article/lifestyle-business-health-pakistan-coronavirus-pandemic-ca85c6959b8559183612e61ccd6bea53
+          </a>
+        </Typography>
+
+        <Typography paragraph>
+          <strong>16.</strong> Human Rights Watch. (2019, January 23).{" "}
+          <i>
+            No room to bargain: Unfair and abusive labor practices in Pakistan
+          </i>
+          .
+          <br />
+          <a
+            href="https://www.hrw.org/report/2019/01/23/no-room-bargain/unfair-and-abusive-labor-practices-pakistan"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#006600", textDecoration: "underline" }}
+          >
+            https://www.hrw.org/report/2019/01/23/no-room-bargain/unfair-and-abusive-labor-practices-pakistan
+          </a>
+        </Typography>
+
+        <Typography paragraph>
+          <strong>17.</strong> The News International. (2019, June 3).{" "}
+          <i>Children shouldn't work in fields but on dreams</i>.
+          <br />
+          <a
+            href="https://www.thenews.com.pk/magazine/you/485982-children-shouldnt-work-in-fields-but-on-dreams"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#006600", textDecoration: "underline" }}
+          >
+            https://www.thenews.com.pk/magazine/you/485982-children-shouldnt-work-in-fields-but-on-dreams
+          </a>
+        </Typography>
+
+        <Typography paragraph>
+          <strong>18.</strong> Mureithi, C. (2023, October 18). Job migration:
+          Kenya’s exodus of workers to the Gulf States. <i>Africa Uncensored</i>
+          .
+          <br />
+          <a
+            href="https://africauncensored.online/blog/2023/10/18/migration-kenya/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#006600", textDecoration: "underline" }}
+          >
+            https://africauncensored.online/blog/2023/10/18/migration-kenya/
+          </a>
+        </Typography>
+
+        <Typography paragraph>
+          <strong>19.</strong> Nandi, S. (2024, April 15). Dubai UAE job vacancy
+          2025 | Gulf job. <i>LinkedIn</i>.
+          <br />
+          <a
+            href="https://www.linkedin.com/posts/subrat-nandi-58984b18a_dubai-uae-job-vacancy-2025-gulf-job-activity-7292400222255648768-55rE/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#006600", textDecoration: "underline" }}
+          >
+            https://www.linkedin.com/posts/subrat-nandi-58984b18a_dubai-uae-job-vacancy-2025-gulf-job-activity-7292400222255648768-55rE/
+          </a>
+        </Typography>
+
+        <Typography paragraph>
+          <strong>20.</strong> Ramadan, A. (2020, August 11). Migrant workers,
+          health, and COVID-19 in GCC countries.{" "}
+          <i>Arab Center Washington DC</i>.
+          <br />
+          <a
+            href="https://arabcenterdc.org/resource/migrant-workers-health-and-covid-19-in-gcc-countries/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#006600", textDecoration: "underline" }}
+          >
+            https://arabcenterdc.org/resource/migrant-workers-health-and-covid-19-in-gcc-countries/
+          </a>
+        </Typography>
+
+        <Typography paragraph>
+          <strong>21.</strong> Safi, M. (2023, October 20). COP28 migrant
+          workers in UAE face ‘intolerable conditions’ in extreme heat.{" "}
+          <i>The Guardian</i>.
+          <br />
+          <a
+            href="https://www.theguardian.com/environment/2023/oct/20/cop28-migrant-workers-uae-heat-climate-crisis"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#006600", textDecoration: "underline" }}
+          >
+            https://www.theguardian.com/environment/2023/oct/20/cop28-migrant-workers-uae-heat-climate-crisis
+          </a>
+        </Typography>
+        <Box sx={{ height: "100px" }} />
       </Box>
     ),
   },
@@ -312,6 +714,7 @@ export default function DriveThrough() {
                     fontFamily: "'Times New Roman', serif",
                     color: "#006600",
                     mb: 2,
+                    mt: section.title === "Bibliography" ? 8 : 0, // ⬅️ margin-top for Bibliography
                     fontSize: { xs: "1.8rem", md: "2.5rem" },
                   }}
                 >
